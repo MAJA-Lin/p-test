@@ -2,7 +2,6 @@
 
 use MajaLin\PTest\OrdinalNumeral;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 final class StackTest extends TestCase
 {
@@ -20,14 +19,14 @@ final class StackTest extends TestCase
     public function testGetOrdinalNumberWithInputZero(): void
     {
         $testClass = new OrdinalNumeral();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $testClass->getOrdinalNumber(0);
     }
 
     public function testGetOrdinalNumberWithNegativeInput(): void
     {
         $testClass = new OrdinalNumeral();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $testClass->getOrdinalNumber(-1503);
     }
 
