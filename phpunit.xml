@@ -1,0 +1,17 @@
+<phpunit bootstrap="src/bootstrap.php">
+  <testsuites>
+    <testsuite name="default">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <coverage cacheDirectory="./tests/coverage/"
+          includeUncoveredFiles="true"
+          processUncoveredFiles="true"
+          pathCoverage="false"
+          ignoreDeprecatedCodeUnits="true"
+          disableCodeCoverageIgnore="true">
+    <include>
+        <directory suffix=".php">src</directory>
+    </include>
+  </coverage>
+</phpunit>
