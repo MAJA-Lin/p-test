@@ -10,9 +10,12 @@ class OrdinalNumeral
         1 => 'st',
         2 => 'nd',
         3 => 'rd',
-        11 => 'th',
-        12 => 'th',
-        13 => 'th',
+    ];
+
+    public const EXCEPTION_NUMBER = [
+        11,
+        12,
+        13,
     ];
 
     public function getOrdinalNumber(int $input): string
@@ -21,15 +24,14 @@ class OrdinalNumeral
             throw new RuntimeException("Cannot find the ordinal numeral!");
         }
 
+        # Check if the given integer follows the suffix rule
         $baseNumeral = $input % 100;
+        if (!in_array($baseNumeral, self::EXCEPTION_NUMBER)) {
+            $baseNumeral = $input % 10;
 
-        if (in_array($baseNumeral, array_keys(self::KNOWN_INDICATOR_SUFFIX))) {
-            return sprintf('%s%s', $input, self::KNOWN_INDICATOR_SUFFIX[$baseNumeral]);
-        }
-
-        $baseNumeral = $input % 10;
-        if (in_array($baseNumeral, array_keys(self::KNOWN_INDICATOR_SUFFIX))) {
-            return sprintf('%s%s', $input, self::KNOWN_INDICATOR_SUFFIX[$baseNumeral]);
+            if (in_array($baseNumeral, array_keys(self::KNOWN_INDICATOR_SUFFIX))) {
+                return sprintf('%s%s', $input, self::KNOWN_INDICATOR_SUFFIX[$baseNumeral]);
+            }
         }
 
         return sprintf('%s%s', $input, 'th');
