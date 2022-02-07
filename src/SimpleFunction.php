@@ -4,5 +4,5 @@ namespace MajaLin\PTest;
 
 interface SimpleFunction
 {
-    public function execute(): mixed;
+    public static function execute(): mixed;
 }

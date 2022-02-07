@@ -18,9 +18,9 @@ class OrdinalNumeral implements SimpleFunction
         13,
     ];
 
-    public function execute(): mixed
+    public static function execute(): mixed
     {
-        return $this->getOrdinalNumber(...func_get_args());
+        return (new self)->getOrdinalNumber(...func_get_args());
     }
 
     public function getOrdinalNumber(int $input): string

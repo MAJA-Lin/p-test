@@ -6,9 +6,9 @@ use RuntimeException;
 
 class InformationObfuscator implements SimpleFunction
 {
-    public function execute(): mixed
+    public static function execute(): mixed
     {
-        return $this->obfuscateInformation(...func_get_args());
+        return (new self)->obfuscateInformation(...func_get_args());
     }
 
     public function obfuscateInformation(string $input)

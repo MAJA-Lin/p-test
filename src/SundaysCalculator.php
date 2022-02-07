@@ -18,9 +18,9 @@ class SundaysCalculator implements SimpleFunction
         'Sun' => 6,
     ];
 
-    public function execute(): mixed
+    public static function execute(): mixed
     {
-        return $this->getSundays(...func_get_args());
+        return (new self)->getSundays(...func_get_args());
     }
 
     public function getSundays(string $dateFrom, string $dateTo): int

@@ -21,9 +21,8 @@ if (!array_key_exists($argv[1], $classMapping)) {
     throw new \RuntimeException("Please enter operation.\n");
 }
 
-$operator = new $classMapping[$argv[1]]();
 $arguments = $argv;
 unset($arguments[0]);
 unset($arguments[1]);
 
-printf("%s\n", $operator->execute(...$arguments));
+printf("%s\n", $classMapping[$argv[1]]::execute(...$arguments));
