@@ -16,6 +16,7 @@ RUN /usr/bin/composer dump-autoload \
 FROM php:8.0-rc-buster
 
 COPY --from=composer /var/app/vendor /var/app/vendor
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 ARG INSTALL_XDEBUG=true
 ENV INSTALL_XDEBUG $INSTALL_XDEBUG
