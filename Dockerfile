@@ -15,6 +15,7 @@ RUN /usr/bin/composer dump-autoload \
 # Main docker image
 FROM php:8.0-rc-buster
 
+COPY ./ /var/app
 COPY --from=composer /var/app/vendor /var/app/vendor
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
@@ -47,4 +48,4 @@ RUN docker-php-ext-install dom xml xmlwriter
 
 WORKDIR /var/app
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT [ "php", "/var/app/index.php" ]
