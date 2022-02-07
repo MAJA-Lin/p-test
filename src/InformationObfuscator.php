@@ -4,8 +4,13 @@ namespace MajaLin\PTest;
 
 use RuntimeException;
 
-class InformationObfuscator
+class InformationObfuscator implements SimpleFunction
 {
+    public function execute(): mixed
+    {
+        return $this->obfuscateInformation(...func_get_args());
+    }
+
     public function obfuscateInformation(string $input)
     {
         if (filter_var($input, FILTER_VALIDATE_EMAIL)) {

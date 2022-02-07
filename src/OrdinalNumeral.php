@@ -4,7 +4,7 @@ namespace MajaLin\PTest;
 
 use RuntimeException;
 
-class OrdinalNumeral
+class OrdinalNumeral implements SimpleFunction
 {
     public const KNOWN_INDICATOR_SUFFIX = [
         1 => 'st',
@@ -17,6 +17,11 @@ class OrdinalNumeral
         12,
         13,
     ];
+
+    public function execute(): mixed
+    {
+        return $this->getOrdinalNumber(...func_get_args());
+    }
 
     public function getOrdinalNumber(int $input): string
     {

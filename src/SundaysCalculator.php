@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use DateTime;
 use RuntimeException;
 
-class SundaysCalculator
+class SundaysCalculator implements SimpleFunction
 {
     public const WEEKDAYS = [
         'Mon' => 0,
@@ -17,6 +17,11 @@ class SundaysCalculator
         'Sat' => 5,
         'Sun' => 6,
     ];
+
+    public function execute(): mixed
+    {
+        return $this->getSundays(...func_get_args());
+    }
 
     public function getSundays(string $dateFrom, string $dateTo): int
     {
