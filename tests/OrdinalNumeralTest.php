@@ -3,7 +3,7 @@
 use MajaLin\PTest\OrdinalNumeral;
 use PHPUnit\Framework\TestCase;
 
-final class StackTest extends TestCase
+final class OrdinalNumeralTest extends TestCase
 {
     public function testGetOrdinalNumberWithNormalInput(): void
     {
