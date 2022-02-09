@@ -1,9 +1,6 @@
 {
     "name": "maja-lin/p-test",
     "type": "project",
-    "require": {
-        "nesbot/carbon": "^2.56"
-    },
     "autoload": {
         "psr-4": {
             "MajaLin\\PTest\\": "src/"
