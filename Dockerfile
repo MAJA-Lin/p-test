@@ -1,13 +1,25 @@
 # Install pakcage dependency
 FROM composer:latest AS composer
 
+ARG TESTING=true
+ENV TESTING $TESTING
+
 COPY ./composer.json /var/app/composer.json
 COPY ./composer.lock /var/app/composer.lock
 
-RUN /usr/bin/composer install --optimize-autoloader \
-    --working-dir=/var/app \
-    --ignore-platform-reqs \
-    --no-scripts
+RUN set -eux \
+    && if [ ${TESTING} = true ]; then \
+        /usr/bin/composer install --optimize-autoloader \
+        --working-dir=/var/app \
+        --ignore-platform-reqs \
+        --no-scripts ;\
+    else \
+        /usr/bin/composer install --optimize-autoloader \
+        --working-dir=/var/app \
+        --ignore-platform-reqs \
+        --no-scripts \
+        --no-dev ;\
+    fi
 
 RUN /usr/bin/composer dump-autoload \
     --working-dir=/var/app
@@ -15,36 +27,28 @@ RUN /usr/bin/composer dump-autoload \
 # Main docker image
 FROM php:8.0-rc-buster
 
+ARG TESTING=true
+ENV TESTING $TESTING
+
 COPY ./ /var/app
 COPY --from=composer /var/app/vendor /var/app/vendor
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-ARG INSTALL_XDEBUG=true
-ENV INSTALL_XDEBUG $INSTALL_XDEBUG
-
-# Install xdebug and copy config file
+# Install essential testing lib
+COPY .build/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
 RUN set -eux \
-    && if [ ${INSTALL_XDEBUG} = true ]; then \
+    && if [ ${TESTING} = true ]; then \
         pecl install xdebug \
-        && docker-php-ext-enable xdebug; \
+        && apt update \
+        && apt install libxml2-dev -yq \
+        && docker-php-ext-install dom xml xmlwriter \
+        && docker-php-ext-enable xdebug \
+        && sed -i "s/xdebug.remote_autostart=0/xdebug.remote_autostart=1/" /usr/local/etc/php/conf.d/xdebug.ini \
+        && sed -i "s/xdebug.remote_enable=0/xdebug.remote_enable=1/" /usr/local/etc/php/conf.d/xdebug.ini \
+        && sed -i "s/xdebug.cli_color=0/xdebug.cli_color=1/" /usr/local/etc/php/conf.d/xdebug.ini ;\
     fi
 
-COPY .build/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
-
-# Ensure xdebug is activated
-RUN set -eux \
-    && sed -i "s/xdebug.remote_autostart=0/xdebug.remote_autostart=1/" /usr/local/etc/php/conf.d/xdebug.ini \
-    && sed -i "s/xdebug.remote_enable=0/xdebug.remote_enable=1/" /usr/local/etc/php/conf.d/xdebug.ini \
-    && sed -i "s/xdebug.cli_color=0/xdebug.cli_color=1/" /usr/local/etc/php/conf.d/xdebug.ini
-
 RUN docker-php-ext-install bcmath
-
-# For testing
-RUN set -eux \
-    && apt update \
-    && apt install libxml2-dev -yq
-
-RUN docker-php-ext-install dom xml xmlwriter
 
 WORKDIR /var/app
 
