@@ -30,7 +30,8 @@ docker-compose run php obfuscate localpart@example.org
 ```
 
 ## Tests
-For running the test, run the following commands *[1]*:
+
+For running the test, modify docker argument `TESTING` to true and run the following commands *[1]*:
 
 ```bash
 docker-compose run --entrypoint '/usr/bin/composer' php test
