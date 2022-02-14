@@ -15,6 +15,8 @@ docker-compose run php ordinal 102
 # Output: 102nd
 ```
 
+The acceptable input is a positive integer between 1 to [PHP_INT_MAX](https://www.php.net/manual/en/reserved.constants.php). For example, `1 ~ 2147483647` in 32 bit systems and `1 ~ 9223372036854775807` in 64 bit systems.
+
 ### *Calculate how many Sundays between two dates*, run:
 
 ```bash
